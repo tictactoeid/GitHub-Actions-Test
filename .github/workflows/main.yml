@@ -1,0 +1,27 @@
+name: SSH EC2 Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ssh-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Test SSH connection to EC2
+        run: |
+          echo "Trying to connect to EC2..."
+          if ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'SSH 연결 성공'"; then
+            echo "SSH 연결 성공"
+          else
+            echo "SSH 연결 실패"
+            exit 1
+          fi

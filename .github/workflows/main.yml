@@ -19,7 +19,7 @@ jobs:
       - name: Test SSH connection to EC2
         run: |
           echo "Trying to connect to EC2..."
-          if ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} "echo 'SSH 연결 성공'"; then
+          if ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} "echo 'SSH 연결 성공'"; then
             echo "SSH 연결 성공"
           else
             echo "SSH 연결 실패"
